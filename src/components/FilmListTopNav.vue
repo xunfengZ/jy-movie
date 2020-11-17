@@ -107,6 +107,29 @@ export default {
 
 
 <style scoped lang="scss">
+// nav{
+//   width: 100%;
+//   margin-top: 200px;
+//   height: 50px;
+//   line-height: 50px;
+//   border-bottom: 1px solid #ccc;
+//   ul{
+//     display:flex;
+//     align-items: center;
+//     text-align: center;
+//     li{
+//       flex: 1;
+//       &.active{
+//         span{
+//           // width: 40%;
+//           border-bottom: 2px solid red;
+//           display: block;
+//           color:#fe5100;
+//         }
+//       }
+//     }
+//   }
+// }
     nav{
         width: 100%;
         height: 50px;
@@ -132,4 +155,5 @@ export default {
             }
         }
     }
+    
 </style>

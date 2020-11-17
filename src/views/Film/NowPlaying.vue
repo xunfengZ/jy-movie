@@ -1,11 +1,13 @@
 <template>
   <div>
-      <FilmList :films="films" :key="'film'+films.length" type='type'></FilmList>
+      <FilmList :films="films" :key="'film'+films.length" :type='type'></FilmList>
+
   </div>
 </template>
 
 
 <script>
+
 import {nowPlayingListData} from '@/api/api.js';
 import FilmList from '@/components/FilmList'
 export default {
@@ -55,20 +57,23 @@ export default {
   },
   //组件创建之后
   created() {
-      nowPlayingListData(this.page).then(res=>{
-        //   console.log(res.data.data);
-        this.films=res.data.data.films;
-        console.log(this.films);
-      })
+     
   },
   //页面渲染之前
   beforeMount() {
 
   },
-  //页面渲染之后
-  mounted() {
-
+  //页面渲染之后 获取数据
+  async mounted() {
+    //  nowPlayingListData(this.page).then(res=>{
+    //     //   console.log(res.data.data);
+    //     this.films=res.data.data.films;
+    //     console.log(this.films);
+    //   })
+      let res=await nowPlayingListData(this.page);
+      this.films=res.data.data.films;
   },
+
   //页面销毁之前
   beforeDestroy() {
 
@@ -122,4 +127,5 @@ export default {
         }
     }
 }
+
 </style>

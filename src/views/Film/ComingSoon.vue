@@ -1,9 +1,14 @@
 <template>
-  <div>我是coming</div>
+  <div>
+    <FilmList :films='films' :key="'film'+films.length" :type="type"></FilmList>
+  </div>
+  
 </template>
 
 
 <script>
+import FilmList from '@/components/FilmList'
+import {comingSoonListData} from '@/api/api.js'
 export default {
     //组件名字
   name: "comingsoon",
@@ -21,11 +26,15 @@ export default {
     }
   },
   //组件注册
-  components: {},
+  components: {
+    FilmList
+  },
   // vue数据集中管理
   data() {
     return {
-      value: "1"
+      page:1,
+      films:[],
+      type:2
     };
   },
   //方法 函数写这里
@@ -54,8 +63,10 @@ export default {
 
   },
   //页面渲染之后
-  mounted() {
-
+  async mounted() {
+   let res=await comingSoonListData(this.page);
+   this.films=res.data.data.films
+   console.log(this.films);
   },
   //页面销毁之前
   beforeDestroy() {

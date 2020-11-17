@@ -5,7 +5,7 @@ axios.defaults.baseURL='https://m.maizuo.com'
 axios.interceptors.request.use(function(config){
     let host="";
     let info=config.headers.info;
-    console.log(config);
+    // console.log(config);
     if('info'==info){
         host= "mall.film-ticket.film.info";
     }else if('cinema'==info){

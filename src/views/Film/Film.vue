@@ -1,7 +1,7 @@
 <template>
   <div>
             <!-- 中间nav -->
-        <FilmListTopNav></FilmListTopNav>
+        <FilmListTopNav :class="fixed ? 'fixed' : ''"></FilmListTopNav>
      <!-- 首页大图 -->
       <div class="top-header">
           <img src="https://static.maizuo.com/v5/upload/189bcf606b4bf49ad5de201a2ea5024d.jpg?x-oss-process=image/quality,Q_70" alt="" class="img-wrap">
@@ -26,7 +26,8 @@ export default {
     // vue数据集中管理
   data:function(){
       return {
-          list1:[]
+          list1:[],
+          fixed:false
       }
   },
   //接收父组件给的东西 type是接收什么东西  default 默认值
@@ -97,7 +98,17 @@ export default {
   },
   //页面渲染之后
   mounted() {
-
+    //添加滚动条监听事件
+    window.addEventListener('scroll',function(){
+      let top=this.document.documentElement.scrollTop;
+      if(top>200){
+        // console.log(1);
+        this.fixed=true
+        // console.log(this.fixed);
+      }else{
+        this.fixed=false;
+      }
+    })
   },
   //页面销毁之前
   beforeDestroy() {
@@ -138,6 +149,11 @@ export default {
 
 
 <style scoped lang="scss">
+.fixed{
+  position: fixed;
+  top: 0;
+  background: #fff;
+}
 .top-header{
     width: 100%;
         overflow: hidden;
@@ -154,4 +170,5 @@ export default {
     object-fit:cover; 
 }
 }
+
 </style>
