@@ -1,32 +1,37 @@
+
 <template>
-  <div>我是cinema</div>
+  <div>
+      <Loading v-if="loading"></Loading>
+  </div>
 </template>
 
 
 <script>
-import axios from 'axios'
+import Loading from '@/components/Loading'
 export default {
     //组件名字
-  name: "cinema",
+  name: "filmlist",
   //接收父组件给的东西 type是接收什么东西  default 默认值
-  props: {
-    list: {
-      type: Array,
-      default() {
-        return [];
-      }
-    },
-    color:{
-        type: String,
-        default:'#000'
-    }
-  },
+  props:['films','type'],
+//   props: {
+      
+//     list: {
+//       type: Array,
+//       default() {
+//         return [];
+//       }
+//     },
+//     color:{
+//         type: String,
+//         default:'#000'
+//     }
+//   },
   //组件注册
-  components: {},
+  components: {Loading},
   // vue数据集中管理
   data() {
     return {
-      value: "1"
+      loading: true
     };
   },
   //方法 函数写这里
@@ -48,7 +53,10 @@ export default {
   },
   //组件创建之后
   created() {
-
+      //判断是否有数据
+      if(this.films.length>0){
+          this.loading=false
+      }
   },
   //页面渲染之前
   beforeMount() {
@@ -98,3 +106,6 @@ export default {
 
 <style scoped lang="scss">
 </style>
+
+
+

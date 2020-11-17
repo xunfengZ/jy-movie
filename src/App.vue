@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+
         <!-- 底部导航 -->
         <FooterNav></FooterNav>
         <!-- 路由容器 -->
@@ -7,12 +8,13 @@
     </div>
 </template>
 <script>
-import FooterNav from "@/components/FooterNav";
 
+import FooterNav from "@/components/FooterNav";
 export default {
   name:'app',
     components: {
         FooterNav,
+
     },
     
 }
@@ -23,9 +25,9 @@ export default {
     margin: 0;
     padding: 0;
 }
-html{
-  font: 12px/1.5;
-}
+// html{
+//   font: 12px/1.5;
+// }
 html,
 body {
   // 不能缩放

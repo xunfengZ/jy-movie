@@ -1,9 +1,13 @@
 <template>
-  <div>我是nowplaying</div>
+  <div>
+      <FilmList :films="films" :key="'film'+films.length" type='type'></FilmList>
+  </div>
 </template>
 
 
 <script>
+import {nowPlayingListData} from '@/api/api.js';
+import FilmList from '@/components/FilmList'
 export default {
     //组件名字
   name: "nowplaying",
@@ -21,11 +25,15 @@ export default {
     }
   },
   //组件注册
-  components: {},
+  components: {
+    FilmList
+  },
   // vue数据集中管理
   data() {
     return {
-      value: "1"
+      page:1,
+      films:[],
+      type:1
     };
   },
   //方法 函数写这里
@@ -47,7 +55,11 @@ export default {
   },
   //组件创建之后
   created() {
-
+      nowPlayingListData(this.page).then(res=>{
+        //   console.log(res.data.data);
+        this.films=res.data.data.films;
+        console.log(this.films);
+      })
   },
   //页面渲染之前
   beforeMount() {
@@ -96,4 +108,18 @@ export default {
 
 
 <style scoped lang="scss">
+.playing{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    li{
+        padding: 15px 15px 15px 0;
+        width: 100%;
+        height: 94px;
+        background: red;
+        a{
+            display: flex;
+        }
+    }
+}
 </style>

@@ -1,13 +1,23 @@
 <template>
-  <div>我是cinema</div>
+  <div>
+      <nav>
+          <ul>
+              <router-link tag="li" to='/film/nowplaying' active-class="active">
+              <span>正在热映</span>
+              </router-link>
+              <router-link tag="li" to='/film/comingsoon' active-class="active">
+              <span>即将上映</span>
+              </router-link>
+          </ul>
+      </nav>
+  </div>
 </template>
 
 
 <script>
-import axios from 'axios'
 export default {
     //组件名字
-  name: "cinema",
+  name: "filmlisttopnav",
   //接收父组件给的东西 type是接收什么东西  default 默认值
   props: {
     list: {
@@ -97,4 +107,29 @@ export default {
 
 
 <style scoped lang="scss">
+    nav{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 1px solid #ccc;
+        margin-top: 200px;
+        // background: red;
+        ul{
+            display: flex;
+            text-align: center;
+            li{
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                &.active{
+                    span{
+                        width: 40%;
+                        border-bottom: 2px solid red;
+                        display: block;
+                        color:#fe5100;
+                    }
+                }
+            }
+        }
+    }
 </style>

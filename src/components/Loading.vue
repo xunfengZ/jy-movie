@@ -1,13 +1,16 @@
 <template>
-  <div>我是cinema</div>
+  <div class="box">
+      <div class="out-box"></div>
+      <div class="inner-box"></div>
+      <div class="text-box">loading</div>
+  </div>
 </template>
 
 
 <script>
-import axios from 'axios'
 export default {
     //组件名字
-  name: "cinema",
+  name: "loading",
   //接收父组件给的东西 type是接收什么东西  default 默认值
   props: {
     list: {
