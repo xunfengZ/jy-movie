@@ -1,5 +1,9 @@
 <template>
-  <div>我是cinema</div>
+  <div>
+    <div ref="xx">
+    {{msg}}
+    </div>
+  </div>
 </template>
 
 
@@ -26,7 +30,8 @@ export default {
   // vue数据集中管理
   data() {
     return {
-      value: "1"
+      value: "1",
+      msg:1111
     };
   },
   //方法 函数写这里
@@ -44,11 +49,13 @@ export default {
 //以下是生命周期
 //组件创建之前  new操作符桥梁函数return 之前
   beforeCreate() {
-    
+    console.log(1);
   },
   //组件创建之后
   created() {
-
+    this.$nextTick(()=>{
+      console.log(2);
+    })
   },
   //页面渲染之前
   beforeMount() {
@@ -56,7 +63,16 @@ export default {
   },
   //页面渲染之后
   mounted() {
-
+    //改变数据之后需要diff和patch算法比对（这里是异步操作），需要一定的时间。这时候异步任务就会挂起
+    this.msg=22222
+    // console.log('first',this.$refs.xx.innerHTML);
+    //nextTick会在diff和patch之后 重新渲染时 找时间再插入
+    // this.$nextTick(()=>{
+    //   console.log('second',this.$refs.xx.innerHTML);
+    // })
+    // setTimeout(() => {
+    //    console.log('second',this.$refs.xx.innerHTML);
+    // }, 100);
   },
   //页面销毁之前
   beforeDestroy() {
@@ -72,7 +88,7 @@ export default {
   },
   //页面视图数据更新之后
   updated() {
-
+    console.log(3);
   },
   //组件路由守卫enter
   beforeRouteEnter(to, from, next) {

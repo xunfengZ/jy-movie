@@ -1,17 +1,17 @@
+
 <template>
-  <div>
-    <FilmList :films='films' :type="type"></FilmList>
+  <div>我是test
+      <div  ref="xx">
+    {{msg}}
+    </div>
   </div>
-  
 </template>
 
 
 <script>
-import FilmList from '@/components/FilmList'
-import {comingSoonListData} from '@/api/api.js'
 export default {
     //组件名字
-  name: "comingsoon",
+  name: "test",
   //接收父组件给的东西 type是接收什么东西  default 默认值
   props: {
     list: {
@@ -26,15 +26,12 @@ export default {
     }
   },
   //组件注册
-  components: {
-    FilmList
-  },
+  components: {},
   // vue数据集中管理
   data() {
     return {
-      page:1,
-      films:[],
-      type:2
+      value: "1",
+      msg:'11111'
     };
   },
   //方法 函数写这里
@@ -56,17 +53,16 @@ export default {
   },
   //组件创建之后
   created() {
-
+console.log(1);
   },
   //页面渲染之前
   beforeMount() {
 
   },
   //页面渲染之后
-  async mounted() {
-   let res=await comingSoonListData(this.page);
-   this.films=res.data.data.films
-  //  console.log(this.films);
+  mounted() {
+      this.msg='22222'
+      console.log('first',this.$refs.xx.innerHTML);
   },
   //页面销毁之前
   beforeDestroy() {
@@ -108,3 +104,6 @@ export default {
 
 <style scoped lang="scss">
 </style>
+
+
+

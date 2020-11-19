@@ -1,17 +1,15 @@
+
 <template>
   <div>
-    <FilmList :films='films' :type="type"></FilmList>
+      <div class="choose">选座购票</div>
   </div>
-  
 </template>
 
 
 <script>
-import FilmList from '@/components/FilmList'
-import {comingSoonListData} from '@/api/api.js'
 export default {
     //组件名字
-  name: "comingsoon",
+  name: "buyticket",
   //接收父组件给的东西 type是接收什么东西  default 默认值
   props: {
     list: {
@@ -26,15 +24,11 @@ export default {
     }
   },
   //组件注册
-  components: {
-    FilmList
-  },
+  components: {},
   // vue数据集中管理
   data() {
     return {
-      page:1,
-      films:[],
-      type:2
+      value: "1"
     };
   },
   //方法 函数写这里
@@ -63,10 +57,8 @@ export default {
 
   },
   //页面渲染之后
-  async mounted() {
-   let res=await comingSoonListData(this.page);
-   this.films=res.data.data.films
-  //  console.log(this.films);
+  mounted() {
+
   },
   //页面销毁之前
   beforeDestroy() {
@@ -107,4 +99,20 @@ export default {
 
 
 <style scoped lang="scss">
+.choose{
+    width: 100%;
+    background: #ff5f16;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    line-height: 50px;
+    
+}
 </style>
+
+
+

@@ -1,12 +1,12 @@
 <template>
   <div>
-            <!-- 中间nav -->
-        <FilmListTopNav :class="fixed ? 'fixed' : ''"></FilmListTopNav>
+    
      <!-- 首页大图 -->
       <div class="top-header">
           <img src="https://static.maizuo.com/v5/upload/189bcf606b4bf49ad5de201a2ea5024d.jpg?x-oss-process=image/quality,Q_70" alt="" class="img-wrap">
           </div>
-          
+                  <!-- 中间nav -->
+        <FilmListTopNav :class="fixed ? 'fixed' : ''"></FilmListTopNav>
           <router-view></router-view>
     <!-- tabs -->
 
@@ -26,7 +26,7 @@ export default {
     // vue数据集中管理
   data:function(){
       return {
-          list1:[],
+          
           fixed:false
       }
   },
@@ -96,13 +96,14 @@ export default {
   beforeMount() {
 
   },
-  //页面渲染之后
+  //页面渲染之后 此时dom产生
   mounted() {
     //添加滚动条监听事件
-    window.addEventListener('scroll',function(){
-      let top=this.document.documentElement.scrollTop;
-      if(top>200){
+    window.addEventListener('scroll',(e)=>{
+      let top=document.documentElement.scrollTop;
+      if(top>300){
         // console.log(1);
+        // console.log(this);  //使用匿名函数 this指向window   使用箭头函数 this指向VueComponent
         this.fixed=true
         // console.log(this.fixed);
       }else{
@@ -157,8 +158,10 @@ export default {
 .top-header{
     width: 100%;
         overflow: hidden;
-        position: absolute;
-        top: 0;
+
+        //这里的图不能加定位，不然会影响中间的导航条
+        // position: absolute;
+        // top: 0;
         height: 200px;
         
 .img-wrap{

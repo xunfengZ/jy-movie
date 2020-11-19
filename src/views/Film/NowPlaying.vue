@@ -1,7 +1,7 @@
 <template>
   <div>
-      <FilmList :films="films" :key="'film'+films.length" :type='type'></FilmList>
-
+      <FilmList :films="films"  :type='type'></FilmList>
+      
   </div>
 </template>
 
@@ -72,6 +72,8 @@ export default {
     //   })
       let res=await nowPlayingListData(this.page);
       this.films=res.data.data.films;
+        // console.log('我在mouted吗？');
+        // console.log(this.films);
   },
 
   //页面销毁之前
@@ -127,5 +129,4 @@ export default {
         }
     }
 }
-
 </style>

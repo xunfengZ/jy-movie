@@ -1,5 +1,5 @@
 <template>
-  <div>
+
       <nav>
           <ul>
               <router-link tag="li" to='/film/nowplaying' active-class="active">
@@ -10,7 +10,7 @@
               </router-link>
           </ul>
       </nav>
-  </div>
+
 </template>
 
 
@@ -106,36 +106,14 @@ export default {
 
 
 
-<style scoped lang="scss">
-// nav{
-//   width: 100%;
-//   margin-top: 200px;
-//   height: 50px;
-//   line-height: 50px;
-//   border-bottom: 1px solid #ccc;
-//   ul{
-//     display:flex;
-//     align-items: center;
-//     text-align: center;
-//     li{
-//       flex: 1;
-//       &.active{
-//         span{
-//           // width: 40%;
-//           border-bottom: 2px solid red;
-//           display: block;
-//           color:#fe5100;
-//         }
-//       }
-//     }
-//   }
-// }
+<style scoped lang="scss" scoped>
+
     nav{
         width: 100%;
         height: 50px;
         line-height: 50px;
         border-bottom: 1px solid #ccc;
-        margin-top: 200px;
+        // margin-top: 200px;
         // background: red;
         ul{
             display: flex;

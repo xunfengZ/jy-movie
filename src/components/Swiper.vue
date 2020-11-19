@@ -1,17 +1,19 @@
+
 <template>
-  <div>
-    <FilmList :films='films' :type="type"></FilmList>
+  <div class="swiper-container">
+      <div class="swiper-wrapper">
+          <slot></slot>
+      </div>
   </div>
-  
 </template>
 
 
 <script>
-import FilmList from '@/components/FilmList'
-import {comingSoonListData} from '@/api/api.js'
+import Swiper from 'swiper'
+import 'swiper/swiper-bundle.min.css'
 export default {
     //组件名字
-  name: "comingsoon",
+  name: "swiper",
   //接收父组件给的东西 type是接收什么东西  default 默认值
   props: {
     list: {
@@ -26,15 +28,11 @@ export default {
     }
   },
   //组件注册
-  components: {
-    FilmList
-  },
+  components: {},
   // vue数据集中管理
   data() {
     return {
-      page:1,
-      films:[],
-      type:2
+      value: "1"
     };
   },
   //方法 函数写这里
@@ -63,10 +61,12 @@ export default {
 
   },
   //页面渲染之后
-  async mounted() {
-   let res=await comingSoonListData(this.page);
-   this.films=res.data.data.films
-  //  console.log(this.films);
+  mounted() {
+      this.$nextTick(()=>{
+          new Swiper('.swiper-container',{
+              slidesPerView: 4,
+          })
+      })
   },
   //页面销毁之前
   beforeDestroy() {
@@ -108,3 +108,6 @@ export default {
 
 <style scoped lang="scss">
 </style>
+
+
+

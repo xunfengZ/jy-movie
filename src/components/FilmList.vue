@@ -1,19 +1,25 @@
 
 <template>
-  <div class="list">
+  <div class="list scroll" :style="{height:height+'px'}">
     <!-- <Loading v-if="loading"></Loading> -->
-    <van-loading size="50px"  vertical v-if="!isFlag">加载中...</van-loading>
-    <!-- <Loading v-if="!isFlag"></Loading> -->
-       
+        <!-- <Loading v-if="!isFlag"></Loading> -->
+        <!-- 三种方法 -->
+        <!-- computed方法 -->
+    <!-- <van-loading size="50px"  vertical v-if="!isFlag">加载中...</van-loading>    -->
+        <!-- js表达式的方法 -->
+        <!-- <van-loading size="50px"  vertical v-if="films.length==0">加载中...</van-loading>     -->
+        <!-- watch的方法 -->
+        <van-loading size="50px"  vertical v-if='watchFlag'>加载中...</van-loading>
+       <!-- 单独写一个div 用来判断 加快性能 -->
+       <div v-else>
     <div class="item" 
-    v-else
-    v-for="(item,index) in films"
+    v-for="(item,index) in data"
     :key='index'
     @click="goDetail(item.filmId)"
     >
       <div class="left">
         <img
-          :src="item.poster"
+          v-lazy="item.poster"
           alt=""
         />
       </div>
@@ -26,9 +32,12 @@
           <span v-if="type==1">观众评分</span>
           <span class="grade">{{item.grade}}</span>
         </div>
-        <div >主演：
+        <!-- 嵌套循环的方式 -->
+        <!-- <div >主演：
            <span v-for="(actor,index) in item.actors" :key='index'>{{actor.name}} &nbsp;</span> 
-            </div>
+            </div> -->
+            <!-- filter过滤 通过管道的方式 -->
+            <div >主演：{{item.actors | actorsData}}</div>
         <div v-if="type==1">{{item.nation}}|{{item.runtime}}分钟</div>
       </div>
       <div class="right">
@@ -36,11 +45,15 @@
         <span v-else>预约</span>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
 
 <script>
+// 导入better scroll
+import BScroll from 'better-scroll'
+import {comingSoonListData,nowPlayingListData} from '@/api/api.js'
 //ui库导入的
 import Vue from 'vue';
 import { Loading } from 'vant';
@@ -78,42 +91,71 @@ export default {
   data() {
     return {
       loading: true,
-      
+      watchFlag:true,
+      height:0,
+      bs:null,
+      flag:true,
+      pageNum:1,
+      data:[]
     };
   },
   //方法 函数写这里
   methods: {
     goDetail(filmid){
-      console.log(this.$router.push({name:'detail',params:{filmid}}));
+      // console.log(filmid);
+      this.$router.push({name:'detail',params:{filmid}});
+    },
+   async getData(){
+      console.log('进入getData');
+      if(this.flag){
+        this.pageNum++
+        if(this.type==1){
+          var ret=await nowPlayingListData(this.pageNum)
+          console.log(ret);
+        }else{
+           var ret=await comingSoonListData(this.pageNum)
+        }
+        if(ret.data.data.films.length<10){
+          this.flag=false
+        }
+        this.data=this.data.concat(ret.data.data.films)
+      }
     }
   },
   //计算属性
   computed: {
-      isFlag(){
-        //   console.log('我在computed');
-        //   console.log(this.films);
-        //   console.log(Boolean(this.films));
-        //   console.log(Boolean(this.films[0]));
-        
-        //因为this.film默认带有 __ob__:Oberserver 所以他转换为布尔值时一直为true 
-        //只能通过下标0来确认是否传值进来
-          // console.log(this.films);
-          return this.films[0]
-      }
+      // isFlag(){
+      //   return this.films[0]
+      //   //因为this.film默认带有 __ob__:Oberserver 所以他转换为布尔值时一直为true 
+      //   //只能通过下标0来确认是否传值进来
+      //     // console.log(this.films);
+          
+      // },
   },
   //侦听器
   watch: {
-    //    isFlag(){
-    //     //   console.log('我在computed');
-    //       console.log(this.films);
-    //       return this.films[0]
-    //   }
+    //简易版
+    // films(){
+    //   this.watchFlag=false
+    // }
+    //加强版
+    films(newval,oldval){
+      // console.log(newval,oldval);
+      if(newval!=oldval){
+        this.watchFlag=false
+        this.data=this.films;
+      }
+    }
   },
   //过滤器
   filters: {
-    toUpcase(value) {
-      return value ? value.toUpperCase() : "";
-    },
+    actorsData(value){
+      let actors=''
+      value.forEach(v=>{
+        actors+=v.name+' '
+      })
+      return actors
+    }
   },
   //以下是生命周期
   //组件创建之前  new操作符桥梁函数return 之前
@@ -125,12 +167,47 @@ export default {
     //       console.log(Boolean(this.films));
         //   console.log(Boolean(this.films[0]));  
         //   console.log('我在created 结束');
+          // if (this.films.length > 0) {
+          //   this.loading = false;
+          // }
+          //   console.log(this.films);
+          // if(this.films.length>0){
+          //   this.loading=false
+          // }
   },
 
   //页面渲染之前
   beforeMount() {},
   //页面渲染之后
   mounted() {
+        this.height=document.documentElement.clientHeight-100;
+      //   this.$nextTick(()=>{
+      //         this.bs=new BScroll('.scroll',{
+      //   // 激活上滑动的事件监听
+      //   pullUpLoad:true,
+      //   // 激活下滑的事件监听
+      //   pullDownRefresh:true,
+      //   // 默认情况下使用bs后，它会禁止浏览器的点击事件
+      //   click:true,
+      // })
+      // //上啦刷新
+      // this.bs.on('pullingUp',()=>{
+      //   console.log('上拉');
+      //   // 获取数据 
+      //   this.getData()
+      //   //本次pullup动作已经完成，继续准备下一次pullup 刷新一次就够了
+      //   this.bs.finishPullUp()
+      // })
+      // //下拉刷新
+      // this.bs.on('pullingDown',()=>{
+      //   console.log('下拉');
+      //   //获取数据
+      //   this.getData()
+      //   //本次pulldown动作已经完成，继续准备下一次pulldown
+      //   this.bs.finishPullDown()
+      // })
+      //   })
+        // console.log(this.height);
           //判断是否有数据
     // console.log(this.films.length);
     // console.log(this.type);
@@ -141,14 +218,45 @@ export default {
     // }
     //   console.log(this.films);
   },
-  //页面销毁之前
-  beforeDestroy() {},
-  //页面销毁之后
-  destroyed() {},
+
   //页面视图数据更新之前
   beforeUpdate() {},
   //页面视图数据更新之后
-  updated() {},
+  updated() {
+    this.bs=new BScroll('.scroll',{
+        // 激活上滑动的事件监听
+        pullUpLoad:true,
+        // 激活下滑的事件监听
+        pullDownRefresh:true,
+        // 默认情况下使用bs后，它会禁止浏览器的点击事件
+        click:true,
+      })
+      //上啦刷新
+      this.bs.on('pullingUp',()=>{
+        console.log('上拉');
+        // 获取数据 
+        this.getData()
+        //本次pullup动作已经完成，继续准备下一次pullup 刷新一次就够了
+        this.bs.finishPullUp()
+      })
+      //下拉刷新
+      this.bs.on('pullingDown',()=>{
+        console.log('下拉');
+        //获取数据
+        this.getData()
+        //本次pulldown动作已经完成，继续准备下一次pulldown
+        this.bs.finishPullDown()
+      })
+  
+
+  },
+    //页面销毁之前
+  beforeDestroy() {
+    //节约资源
+    this.bs=null;
+  },
+  //页面销毁之后
+  destroyed() {},
   //组件路由守卫enter
   beforeRouteEnter(to, from, next) {
     next((vm) => {});
@@ -172,6 +280,7 @@ export default {
 
 
 <style scoped lang="scss">
+
 .list{
     margin-bottom: 50px;
 }
@@ -225,7 +334,7 @@ export default {
   width: 15%;
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 30px;
   span {
     border: 1px solid #ff5f16;
     background: white;
@@ -237,6 +346,12 @@ export default {
     width: 50px;
     text-align: center;
   }
+}
+.grade{
+  color: orange;
+}
+.scroll{
+  overflow: hidden;
 }
 </style>
 
