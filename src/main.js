@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
+import store from './store/vuex'
 
 // 报错后新加的
 import Router from 'vue-router'
@@ -20,5 +21,6 @@ Vue.use(VueLazyload,{
 Vue.prototype.eventBus=new Vue();
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

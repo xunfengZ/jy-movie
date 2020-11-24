@@ -108,17 +108,22 @@ export default {
    async getData(){
       console.log('进入getData');
       if(this.flag){
+        this.flag=false
         this.pageNum++
         if(this.type==1){
           var ret=await nowPlayingListData(this.pageNum)
-          console.log(ret);
+          // console.log(ret);
         }else{
            var ret=await comingSoonListData(this.pageNum)
         }
+        
         if(ret.data.data.films.length<10){
           this.flag=false
+          // console.log('加载完成');
         }
         this.data=this.data.concat(ret.data.data.films)
+        // console.log('第'+this.pageNum+'页');
+        this.flag=true
       }
     }
   },
@@ -144,6 +149,7 @@ export default {
       if(newval!=oldval){
         this.watchFlag=false
         this.data=this.films;
+        
       }
     }
   },
@@ -223,17 +229,33 @@ export default {
   beforeUpdate() {},
   //页面视图数据更新之后
   updated() {
-    this.bs=new BScroll('.scroll',{
+    //有bug的写法
+    // this.bs=new BScroll('.scroll',{
+    //     // 激活上滑动的事件监听
+    //     pullUpLoad:true,
+    //     // 激活下滑的事件监听
+    //     pullDownRefresh:true,
+    //     // 默认情况下使用bs后，它会禁止浏览器的点击事件
+    //     click:true,
+    //   })
+
+    //无bug的写法
+    if(!this.bs){
+        this.bs=new BScroll('.scroll',{
         // 激活上滑动的事件监听
         pullUpLoad:true,
         // 激活下滑的事件监听
         pullDownRefresh:true,
+        mouseWheel: true,
         // 默认情况下使用bs后，它会禁止浏览器的点击事件
         click:true,
       })
+    }else{
+      this.bs.refresh()
+    }
       //上啦刷新
       this.bs.on('pullingUp',()=>{
-        console.log('上拉');
+        // console.log('上拉');
         // 获取数据 
         this.getData()
         //本次pullup动作已经完成，继续准备下一次pullup 刷新一次就够了
@@ -241,7 +263,7 @@ export default {
       })
       //下拉刷新
       this.bs.on('pullingDown',()=>{
-        console.log('下拉');
+        // console.log('下拉');
         //获取数据
         this.getData()
         //本次pulldown动作已经完成，继续准备下一次pulldown

@@ -38,7 +38,12 @@ export default {
   },
   //页面渲染之后
   mounted() {
-
+    window.addEventListener('unload',this.saveState)
+  },
+  methods:{
+    saveState(){
+      sessionStorage.setItem('state',JSON.stringify(this.$store.state))
+    }
   },
   //页面销毁之前
   beforeDestroy() {
@@ -71,7 +76,7 @@ export default {
 html,
 body {
   // 不能缩放
-    touch-action: none;
+    // touch-action: none;
     height: 100%;
     
     ul,

@@ -6,6 +6,7 @@ import centerRouter from '@/router/routes/center.js'
 import cinemaRouter from "@/router/routes/cinema.js";
 import filmRouter from "@/router/routes/film.js";
 import detailRouter from '@/router/routes/detail.js'
+import cityRouter from '@/router/routes/city.js'
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,7 @@ const routes = [
     cinemaRouter,
     filmRouter,
     detailRouter,
+    cityRouter,
     {
         path: "/",
         redirect: "/film",
@@ -31,9 +33,11 @@ const routes = [
 //     component:()=>import('../views/Center/Center.vue')
     
 // },
+
+
 {
     path:'/test',
-    componnet:()=>import('../test/testTick.vue')
+    component:()=>import('../views/test/vuex测试.vue')
 }
 ];
 
